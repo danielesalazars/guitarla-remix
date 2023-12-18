@@ -1,13 +1,8 @@
 import { getPost } from "../models/posts.server";
 import { Posts as IPosts, Post as IPost } from "../interfaces/IPost";
 import { formatearFecha } from "../utils/helpers";
-import { LinksFunction, LoaderFunctionArgs } from "@remix-run/node";
+import { LoaderFunctionArgs } from "@remix-run/node";
 import { MetaFunction, useLoaderData } from "@remix-run/react";
-import BlogCSS from "../styles/blog.css";
-
-export const links: LinksFunction = () => [
-  { rel: "stylesheet", href: BlogCSS },
-];
 
 export const meta: MetaFunction<typeof loader> = ({ data }) => {
   if (!data || !data[0]) {
@@ -39,7 +34,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return post.data;
 };
 
-const Posts = () => {
+const Blog = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const post: IPosts[] = useLoaderData();
 
@@ -54,7 +49,7 @@ const Posts = () => {
   );
 
   return (
-    <article className="contenedor post mt-3">
+    <article className="post mt-3">
       <img
         className="imagen"
         src={imagen.data.attributes.url}
@@ -74,4 +69,4 @@ const Posts = () => {
   );
 };
 
-export default Posts;
+export default Blog;
