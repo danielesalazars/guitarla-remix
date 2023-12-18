@@ -34,7 +34,7 @@ export const loader = async ({ params }: LoaderFunctionArgs) => {
   return post.data;
 };
 
-const Blog = () => {
+const BlogUrl = () => {
   // eslint-disable-next-line react-hooks/rules-of-hooks
   const post: IPosts[] = useLoaderData();
 
@@ -69,4 +69,4 @@ const Blog = () => {
   );
 };
 
-export default Blog;
+export default BlogUrl;
