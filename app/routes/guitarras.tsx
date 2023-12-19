@@ -1,4 +1,4 @@
-import { Outlet } from "@remix-run/react";
+import { Outlet, useOutletContext } from "@remix-run/react";
 import { LinksFunction } from "@remix-run/node";
 import guitarrasCSS from "../styles/guitarras.css";
 
@@ -9,7 +9,7 @@ export const links: LinksFunction = () => [
 const Guitarras = () => {
   return (
     <main className="contenedor">
-      <Outlet />
+      <Outlet context={useOutletContext()} />
     </main>
   );
 };

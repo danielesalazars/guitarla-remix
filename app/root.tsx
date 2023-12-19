@@ -1,5 +1,6 @@
 import { cssBundleHref } from "@remix-run/css-bundle";
 import { LinksFunction, MetaFunction } from "@remix-run/node";
+import { FC, ReactNode, useEffect, useState } from "react";
 import {
   Links,
   LiveReload,
@@ -9,12 +10,12 @@ import {
   ScrollRestoration,
   isRouteErrorResponse,
   useRouteError,
+  Link,
 } from "@remix-run/react";
 import appStylesHref from "./styles/index.css";
 import Header from "./components/header";
 import Footer from "./components/footer";
-import { FC, ReactNode } from "react";
-import { Link } from "@remix-run/react";
+import { Item } from "./interfaces/ICarrito";
 
 export const meta: MetaFunction = () => {
   return [
@@ -33,7 +34,7 @@ export const links: LinksFunction = () => [
   {
     rel: "preconnect",
     href: "https://fonts.gstatic.com",
-    crossOrigin: "true",
+    crossOrigin: "anonymous",
   },
   {
     rel: "stylesheet",
@@ -47,9 +48,60 @@ export const links: LinksFunction = () => [
 ];
 
 export default function App() {
+  const carritoLSString =
+    typeof window !== "undefined" ? localStorage.getItem("carrito") : null;
+  const carritoLS = carritoLSString !== null ? JSON.parse(carritoLSString) : [];
+
+  const [carrito, setCarrito] = useState<Item[]>(carritoLS);
+
+  useEffect(() => {
+    localStorage.setItem("carrito", JSON.stringify(carrito));
+  }, [carrito]);
+
+  const agregarCarrito = (guitarra: Item) => {
+    if (carrito.some((guitarraState) => guitarraState.id === guitarra.id)) {
+      //Iterar sobre el arreglo, e identificar el elemento duplicado
+      const carritoActualizado = carrito.map((guitarraState) => {
+        if (guitarraState.id === guitarra.id) {
+          //Reescribir la cantidad
+          guitarraState.cantidad = guitarra.cantidad;
+        }
+        return guitarraState;
+      });
+      //añadir al carrito
+      setCarrito(carritoActualizado);
+    } else {
+      setCarrito([...carrito, guitarra]);
+    }
+  };
+
+  const actualizarCantidad = (guitarra: { cantidad: number; id: number }) => {
+    const carritoActualizado = carrito.map((guitarraState) => {
+      if (guitarraState.id === guitarra.id) {
+        guitarraState.cantidad = guitarra.cantidad;
+      }
+      return guitarraState;
+    });
+    setCarrito(carritoActualizado);
+  };
+
+  const eliminarGuitarra = (id: number) => {
+    const carritoActualizado = carrito.filter(
+      (guitarraSatete) => guitarraSatete.id !== id
+    );
+    setCarrito(carritoActualizado);
+  };
+
   return (
     <Document>
-      <Outlet />
+      <Outlet
+        context={{
+          agregarCarrito,
+          carrito,
+          actualizarCantidad,
+          eliminarGuitarra,
+        }}
+      />
     </Document>
   );
 }

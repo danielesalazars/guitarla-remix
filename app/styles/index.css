@@ -58,6 +58,7 @@ main {
   align-items: center;
 }
 .header .navegacion {
+  align-items: center;
   display: flex;
   gap: 2rem;
   margin-top: 5rem;
@@ -71,6 +72,9 @@ main {
   padding: 0.5rem;
   transition-property: background-color;
   transition-duration: 300ms;
+}
+.header .navegacion img {
+  width: 3rem;
 }
 .header .navegacion a:hover,
 .header .navegacion a.active {
@@ -87,6 +91,9 @@ main {
   flex-direction: column;
   align-items: center;
   gap: 2rem;
+}
+.footer .navegacion img {
+  display: none;
 }
 .footer .navegacion a,
 .footer .copyright {
